@@ -3,3 +3,13 @@
 .vscode/c_cpp_properties.json
 .vscode/launch.json
 .vscode/ipch
+.settings
+.vscode
+Debug
+ldscipts
+system
+.cproject
+.project
+platformio.ini
+.gitattributes
+.gitignore
