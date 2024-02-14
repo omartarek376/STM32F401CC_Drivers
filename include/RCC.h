@@ -1,3 +1,4 @@
+#pragma once
 #include <stdint.h>
 
 #define STATE_ON				1
