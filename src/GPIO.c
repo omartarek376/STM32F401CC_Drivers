@@ -17,6 +17,8 @@
 
 #define BSRR_OFFSET                             16
 
+#define READ_MSK                                1
+
 
 
 typedef struct 
@@ -52,17 +54,17 @@ GPIO_ERROR_STATE GPIO_InitPin(GPIO_CONFIG_T * Config)
 
     Temp = GPIO_Ports[Config->Port]->OTYPER;
     Temp &= ~(GPIO_OTYPER_MSK << (Config->Pin * PIN_OTYPER_OFFSET));
-    Temp |= ((Config->Mode >> PIN_MODER_OFFSET) << (Config->Pin * PIN_OTYPER_OFFSET));
+    Temp |= (((Config->Mode >> PIN_MODER_OFFSET) & GPIO_OTYPER_MSK) << (Config->Pin * PIN_OTYPER_OFFSET));
     GPIO_Ports[Config->Port]->OTYPER = Temp;
 
     Temp = GPIO_Ports[Config->Port]->OSPEEDR;
     Temp &= ~(GPIO_OSPEEDR_MSK << (Config->Pin * PIN_OSPEEDR_OFFSET));
-    Temp |= ((Config->Mode >> (PIN_MODER_OFFSET + PIN_OTYPER_OFFSET)) << (Config->Pin * PIN_OSPEEDR_OFFSET));
+    Temp |= ((Config->Speed & GPIO_OSPEEDR_MSK) << (Config->Pin * PIN_OSPEEDR_OFFSET));
     GPIO_Ports[Config->Port]->OSPEEDR = Temp;
 
     Temp = GPIO_Ports[Config->Port]->PUPDR;
     Temp &= ~(GPIO_PUPDR_MSK << (Config->Pin * PIN_PUPDR_OFFSET));
-    Temp |= ((Config->Mode >> (PIN_MODER_OFFSET + PIN_OTYPER_OFFSET + PIN_OSPEEDR_OFFSET)) << (Config->Pin * PIN_PUPDR_OFFSET));
+    Temp |= (((Config->Mode >> (PIN_MODER_OFFSET + PIN_OTYPER_OFFSET)) & GPIO_PUPDR_MSK) << (Config->Pin * PIN_PUPDR_OFFSET));
     GPIO_Ports[Config->Port]->PUPDR = Temp;
 
     Error_State = GPIO_ENUM_OK;
@@ -105,7 +107,7 @@ GPIO_ERROR_STATE GPIO_GetPinValue(uint32_t GPIO_PORT, uint32_t GPIO_PIN, uint8_t
     }
     else
     {
-        *PinValue = (GPIO_Ports[GPIO_PORT]->IDR >> GPIO_PIN);
+        *PinValue = (GPIO_Ports[GPIO_PORT]->IDR >> GPIO_PIN) & READ_MSK;
     }
     return Error_State;
 }
