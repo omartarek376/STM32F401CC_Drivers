@@ -91,3 +91,21 @@ GPIO_ERROR_STATE GPIO_SetPinValue(uint32_t GPIO_PORT, uint32_t GPIO_PIN, uint32_
     }
     return Error_State;
 }
+
+GPIO_ERROR_STATE GPIO_GetPinValue(uint32_t GPIO_PORT, uint32_t GPIO_PIN, uint8_t * PinValue)
+{
+    GPIO_ERROR_STATE Error_State = GPIO_ENUM_NOK;
+    if (GPIO_PORT > GPIO_PORT_C || GPIO_PIN > GPIO_PIN_15)
+    {
+        Error_State = GPIO_ENUM_INVALID_CONFIG;
+    }
+    else if (GPIO_PORT == GPIO_PORT_C && GPIO_PIN < GPIO_PIN_13)
+    {
+       Error_State = GPIO_ENUM_INVALID_CONFIG; 
+    }
+    else
+    {
+        *PinValue = (GPIO_Ports[GPIO_PORT]->IDR >> GPIO_PIN);
+    }
+    return Error_State;
+}
