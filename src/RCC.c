@@ -130,8 +130,9 @@ RCC_Error_State RCC_Set_SystemClock(uint32_t RCC_SYSCLK)
 		else
 		{
 			Loc_Error_Status = RCC_INVALID_CONFIG;
+			break;
 		}
-		break;
+		
 
 		case RCC_SYSCLK_HSE:
 		if ((RCC->CR & RCC_HSE_RDY) == RCC_HSE_RDY)
@@ -145,8 +146,9 @@ RCC_Error_State RCC_Set_SystemClock(uint32_t RCC_SYSCLK)
 		else
 		{
 			Loc_Error_Status = RCC_INVALID_CONFIG;
+			break;
 		}
-		break;
+		
 
 
 		case RCC_SYSCLK_PLL:
@@ -161,8 +163,9 @@ RCC_Error_State RCC_Set_SystemClock(uint32_t RCC_SYSCLK)
 		else
 		{
 			Loc_Error_Status = RCC_INVALID_CONFIG;
+			break;
 		}
-		break;
+		
 
 		default:
 		Loc_Error_Status = RCC_INVALID_CONFIG;
@@ -261,8 +264,8 @@ RCC_Error_State RCC_Cfg_PLL_CLKSRC(uint32_t PLL_CLKSRC)
 			RCC->PLLCFGR |= PLL_CLKSRC;
 			Loc_Error_Status = RCC_OK;
 		}
-		else{}
-		break;
+		else{break;}
+		
 
 		case PLL_CLKSRC_HSI:
 		if((RCC->CR & RCC_HSI_RDY) == RCC_HSI_RDY)
@@ -270,8 +273,8 @@ RCC_Error_State RCC_Cfg_PLL_CLKSRC(uint32_t PLL_CLKSRC)
 			RCC->PLLCFGR &= PLL_CLKSRC;
 			Loc_Error_Status = RCC_OK;
 		}
-		else{}
-		break;
+		else{break;}
+		
 	}
 
 		return Loc_Error_Status;
