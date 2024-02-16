@@ -1,20 +1,12 @@
 #include "MCAL/RCC.h"
 #include "MCAL/GPIO.h"
+#include "HAL/LED.h"
 
 
 int main()
 {
-	RCC_Cfg_PLL_Prescalars(7,6,200,10);
-	RCC_Enable_Clock(RCC_ENABLE_PLL, STATE_ON);
-	RCC_Enable_AHB1_Peripheral(AHB1_GPIOC_ENABLE , STATE_ON);
 	RCC_Enable_AHB1_Peripheral(AHB1_GPIOA_ENABLE , STATE_ON);
-
-	GPIO_CONFIG_T Led;
-	Led.Port = GPIO_PORT_C;
-	Led.Pin = GPIO_PIN_13;
-	Led.Mode = GPIO_MODE_OP_PP_PD;
-	Led.Speed = GPIO_SPEED_MED;
-	GPIO_InitPin(&Led);
+	led_init();
 
 	GPIO_CONFIG_T In_A1;
 	In_A1.Port = GPIO_PORT_A;
@@ -31,10 +23,14 @@ int main()
 		if (state == STATE_ON)
 		{
 			GPIO_SetPinValue(GPIO_PORT_C, GPIO_PIN_13, 0);
+			led_setstatus(led_red, led_state_on);
+			led_setstatus(led_green, led_state_on);
 		}
 		else
 		{
 			GPIO_SetPinValue(GPIO_PORT_C, GPIO_PIN_13, 1);
+			led_setstatus(led_red, led_state_off);
+			led_setstatus(led_green, led_state_off);
 		}
 	}
 	return 0;
