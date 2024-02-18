@@ -1,36 +1,29 @@
 #include "MCAL/RCC.h"
 #include "MCAL/GPIO.h"
 #include "HAL/LED.h"
+#include "HAL/Switch.h"
 
 
 int main()
 {
 	RCC_Enable_AHB1_Peripheral(AHB1_GPIOA_ENABLE , STATE_ON);
+	RCC_Enable_AHB1_Peripheral(AHB1_GPIOC_ENABLE , STATE_ON);
+
+	Switch_init();
 	led_init();
-
-	GPIO_CONFIG_T In_A1;
-	In_A1.Port = GPIO_PORT_A;
-	In_A1.Pin = GPIO_PIN_1;
-	In_A1.Mode = GPIO_MODE_IN_PD;
-	In_A1.Speed = GPIO_SPEED_MED;
-	GPIO_InitPin(&In_A1);
-
+	
 	uint8_t state = 0;
 
 	while (1)
 	{
-		GPIO_GetPinValue(GPIO_PORT_A, GPIO_PIN_1, &state); 
-		if (state == STATE_ON)
+		Switch_getstatus(Led_Switch, &state); 
+		if (state == Switch_state_on)
 		{
-			GPIO_SetPinValue(GPIO_PORT_C, GPIO_PIN_13, 0);
-			led_setstatus(led_red, led_state_on);
-			led_setstatus(led_green, led_state_on);
+			led_setstatus(led_builtin, STATE_ON);
 		}
 		else
 		{
-			GPIO_SetPinValue(GPIO_PORT_C, GPIO_PIN_13, 1);
-			led_setstatus(led_red, led_state_off);
-			led_setstatus(led_green, led_state_off);
+			led_setstatus(led_builtin, STATE_OFF);
 		}
 	}
 	return 0;

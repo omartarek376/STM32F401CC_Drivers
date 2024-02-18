@@ -2,16 +2,10 @@
 
 const ledcfg_t leds[_led_num]=
 {
-    [led_red]=
+    [led_builtin]=
     {
-        .port=GPIO_PORT_A,
-        .pin=GPIO_PIN_2,
-        .connection= Led_conn_forward,
-    },
-    [led_green]=
-    {
-        .port=GPIO_PORT_A,
-        .pin=GPIO_PIN_3,
+        .port=GPIO_PORT_C,
+        .pin=GPIO_PIN_13,
         .connection= Led_conn_rev,
     }
 };
