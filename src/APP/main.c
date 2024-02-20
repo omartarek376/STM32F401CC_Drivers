@@ -1,5 +1,4 @@
 #include "MCAL/RCC.h"
-#include "MCAL/GPIO.h"
 #include "HAL/LED.h"
 #include "HAL/Switch.h"
 

@@ -1,7 +1,7 @@
 #pragma once
-
+#include <stdint.h>
 #include "CFG/LED_Cfg.h"
-#include "MCAL/GPIO.h"
+
 
 #define Led_conn_forward        0
 #define Led_conn_rev            1

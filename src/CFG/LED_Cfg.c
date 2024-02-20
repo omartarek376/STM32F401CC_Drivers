@@ -1,4 +1,5 @@
 #include "HAL/LED.h"
+#include "MCAL/GPIO.h"
 
 const ledcfg_t leds[_led_num]=
 {
