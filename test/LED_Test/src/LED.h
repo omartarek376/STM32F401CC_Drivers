@@ -1,6 +1,6 @@
 #pragma once
 #include <stdint.h>
-#include "CFG/LED_Cfg.h"
+#include "LED_Cfg.h"
 
 
 #define Led_conn_forward        0

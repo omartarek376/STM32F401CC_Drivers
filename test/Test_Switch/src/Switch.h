@@ -1,7 +1,7 @@
 #pragma once
 
-#include "CFG/Switch_Cfg.h"
-#include "MCAL/GPIO.h"
+#include "Switch_Cfg.h"
+#include "GPIO.h"
 
 #define Switch_conn_pullup         1
 #define Switch_conn_pushdown       0

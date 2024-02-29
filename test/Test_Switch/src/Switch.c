@@ -1,5 +1,5 @@
-#include "HAL/Switch.h"
-#include "MCAL/GPIO.h"
+#include "Switch.h"
+#include "GPIO.h"
 
 #define NULL ((void*)0)
 
@@ -46,7 +46,7 @@ SWITCH_ERROR_STATE Switch_getstatus(uint32_t Switch, uint8_t * Switch_state)
         ERROR_STATE = SWITCH_ENUM_NULLPTR;
     }
     else
-        {
+    {
         if (Switch >= _Switch_num)
         {
             ERROR_STATE = SWITCH_ENUM_INVALIDCONFIG;
@@ -54,7 +54,7 @@ SWITCH_ERROR_STATE Switch_getstatus(uint32_t Switch, uint8_t * Switch_state)
         else
         {
             GPIO_GetPinValue(Switches[Switch].port, Switches[Switch].pin, Switch_state);
-            *Switch_state ^= Switches[Switch].connection;
+            //*Switch_state ^= Switches[Switch].connection;
             ERROR_STATE = SWITCH_ENUM_OK;
         }
     }

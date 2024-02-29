@@ -1,5 +1,5 @@
-#include "HAL/LED.h"
-#include "MCAL/GPIO.h"
+#include "LED.h"
+#include "GPIO.h"
 
 extern const ledcfg_t leds[_led_num];
 
