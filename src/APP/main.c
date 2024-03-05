@@ -1,29 +1,46 @@
+#include "MCAL/NVIC.h"
+#include "MCAL/STM32F401CC_NVIC.h"
+#include "MCAL/GPIO.h"
 #include "MCAL/RCC.h"
 #include "HAL/LED.h"
-#include "HAL/Switch.h"
+
+void delay_ms(uint32_t ms)
+ {
+    for (volatile uint32_t i = 0; i < ms * 16000; ++i)
+    {
+
+    }
+}
+void EXTI0_IRQHandler(void)
+{
+  led_setstatus(led_builtin , STATE_ON);
+  NVIC_Trigger_Software_Interrupt(IRQ_EXT1_INTERRRUPT);
+  delay_ms(100);
+}
+
+
+void EXTI1_IRQHandler(void)
+{
+	NVIC_Trigger_Software_Interrupt(IRQ_EXT0_INTERRRUPT);
+	led_setstatus(led_builtin, STATE_OFF);
+	delay_ms(100);
+}
 
 
 int main()
 {
-	RCC_Enable_AHB1_Peripheral(AHB1_GPIOA_ENABLE , STATE_ON);
-	RCC_Enable_AHB1_Peripheral(AHB1_GPIOC_ENABLE , STATE_ON);
-
-	Switch_init();
+	RCC_Enable_AHB1_Peripheral(AHB1_GPIOC_ENABLE,STATE_ON);
 	led_init();
+	NVIC_EnableIRQ(IRQ_EXT0_INTERRRUPT);
+	NVIC_EnableIRQ(IRQ_EXT1_INTERRRUPT);	
+	NVIC_SetPriority(IRQ_EXT0_INTERRRUPT,0x30);
+	NVIC_SetPriority(IRQ_EXT1_INTERRRUPT,0x10);
+	NVIC_SetPriorityGrouping(GROUP_2);
+	NVIC_Trigger_Software_Interrupt(IRQ_EXT0_INTERRRUPT);
 	
-	uint8_t state = 0;
-
 	while (1)
 	{
-		Switch_getstatus(Led_Switch, &state); 
-		if (state == Switch_state_on)
-		{
-			led_setstatus(led_builtin, STATE_ON);
-		}
-		else
-		{
-			led_setstatus(led_builtin, STATE_OFF);
-		}
+	
 	}
 	return 0;
 }
