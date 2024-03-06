@@ -13,7 +13,7 @@ void delay_ms(uint32_t ms)
 }
 void EXTI0_IRQHandler(void)
 {
-	led_setstatus(led_builtin , STATE_ON);
+	led_setstatus(led_builtin , STATE_OFF);
 	NVIC_Trigger_Software_Interrupt(IRQ_EXT1_INTERRRUPT);
 	delay_ms(50);
 }
@@ -22,7 +22,7 @@ void EXTI0_IRQHandler(void)
 void EXTI1_IRQHandler(void)
 {
 	NVIC_SetPendingIRQ(IRQ_EXT0_INTERRRUPT);
-	led_setstatus(led_builtin, STATE_OFF);
+	led_setstatus(led_builtin, STATE_ON);
 	delay_ms(50);
 }
 
@@ -35,7 +35,7 @@ int main()
 	NVIC_EnableIRQ(IRQ_EXT1_INTERRRUPT);	
 	NVIC_SetPriority(IRQ_EXT0_INTERRRUPT,0x30);
 	NVIC_SetPriority(IRQ_EXT1_INTERRRUPT,0x10);
-	NVIC_SetPriorityGrouping(GROUP_7);
+	NVIC_SetPriorityGrouping(GROUP_4_SUB);
 	volatile uint8_t x = NVIC_GetPriority(IRQ_EXT0_INTERRRUPT);
 	NVIC_Trigger_Software_Interrupt(IRQ_EXT0_INTERRRUPT);
 	

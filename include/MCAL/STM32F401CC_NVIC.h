@@ -1,9 +1,10 @@
 #pragma once
 
-#define GROUP_4 0x05FA0400
-#define GROUP_5 0x05FA0500
-#define GROUP_6 0x05FA0600
-#define GROUP_7 0x05FA0700
+#define GROUP_0_SUB 0x05FA0000          //[4] bits Preempt Group &  [0] bits Subpriority Group
+#define GROUP_1_SUB 0x05FA0400          //[3] bits Preempt Group &  [1] bits Subpriority Group
+#define GROUP_2_SUB 0x05FA0500          //[2] bits Preempt Group &  [2] bits Subpriority Group
+#define GROUP_3_SUB 0x05FA0600          //[1] bits Preempt Group &  [3] bits Subpriority Group
+#define GROUP_4_SUB 0x05FA0700          //[0] bits Preempt Group &  [4] bits Subpriority Group
 
 #define IRQ_WINDOW_WATCHDOG_TIMER 0
 #define IRQ_EXTERNAL_LINE16 1
