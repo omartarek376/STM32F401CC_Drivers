@@ -19,22 +19,22 @@
 
 void NVIC_EnableIRQ(uint8_t IRQ)
 {
-    NVIC_ISER[IRQ / REGISTER_OFFSET] |= 1 << (IRQ % REGISTER_OFFSET);
+    NVIC_ISER[IRQ / REGISTER_OFFSET] = 1 << (IRQ % REGISTER_OFFSET);
 }
 
 void NVIC_DisableIRQ(uint8_t IRQ)
 {
-    NVIC_ICER[IRQ / REGISTER_OFFSET] |= 1 << (IRQ % REGISTER_OFFSET);
+    NVIC_ICER[IRQ / REGISTER_OFFSET] = 1 << (IRQ % REGISTER_OFFSET);
 }
 
 void NVIC_SetPendingIRQ(uint8_t IRQ)
 {
-    NVIC_ISPR[IRQ / REGISTER_OFFSET] |= 1 << (IRQ % REGISTER_OFFSET);
+    NVIC_ISPR[IRQ / REGISTER_OFFSET] = 1 << (IRQ % REGISTER_OFFSET);
 }
 
 void NVIC_ClearPendingIRQ(uint8_t IRQ)
 {
-    NVIC_ICPR[IRQ / REGISTER_OFFSET] |= 1 << (IRQ % REGISTER_OFFSET);
+    NVIC_ICPR[IRQ / REGISTER_OFFSET] = 1 << (IRQ % REGISTER_OFFSET);
 }
 
 INTERRUPT_ACTIVE_STATUS_T NVIC_GetPendingIRQ(uint8_t IRQ)
@@ -44,18 +44,16 @@ INTERRUPT_ACTIVE_STATUS_T NVIC_GetPendingIRQ(uint8_t IRQ)
 
 void NVIC_SetPriority(uint8_t IRQ, uint8_t priority)
 {
-    uint32_t registerIndex = IRQ >> IPR_INDEX_SHIFT;
-    uint32_t bitOffset = (IRQ & PRIORITY_BIT_MSK) * BIT_OFFSET;
-    NVIC_IPR[registerIndex] &= ~(PRIORITY_CLR_MSK << bitOffset);
-    NVIC_IPR[registerIndex] |= (priority << bitOffset);
+    uint32_t bitOffset = (IRQ % PRIORITY_OFFSET) * BIT_OFFSET;
+    NVIC_IPR[IRQ / PRIORITY_OFFSET] &= ~(PRIORITY_CLR_MSK << bitOffset);
+    NVIC_IPR[IRQ / PRIORITY_OFFSET] |= (priority << bitOffset);
 }
 
 
 uint8_t NVIC_GetPriority(uint8_t IRQ)
 {
-    uint32_t registerIndex = IRQ >> IPR_INDEX_SHIFT;
-    uint32_t bitOffset = (IRQ & PRIORITY_BIT_MSK) * BIT_OFFSET;
-    return (NVIC_IPR[registerIndex] >> bitOffset) & PRIORITY_CLR_MSK;
+    uint32_t bitOffset = (IRQ % PRIORITY_OFFSET) * BIT_OFFSET;
+    return (NVIC_IPR[IRQ / PRIORITY_OFFSET] >> bitOffset >> PRIORITY_OFFSET) & PRIORITY_CLR_MSK;
 }
 
 

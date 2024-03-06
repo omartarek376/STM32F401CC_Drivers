@@ -1,9 +1,5 @@
 #pragma once
 
-#define GROUP_0 0x05FA0000
-#define GROUP_1 0x05FA0100
-#define GROUP_2 0x05FA0200
-#define GROUP_3 0x05FA0300
 #define GROUP_4 0x05FA0400
 #define GROUP_5 0x05FA0500
 #define GROUP_6 0x05FA0600
