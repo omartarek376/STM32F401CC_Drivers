@@ -1,43 +1,44 @@
-#include "MCAL/NVIC.h"
-#include "MCAL/STM32F401CC_NVIC.h"
+#include "MCAL/SYSTICK.h"
 #include "MCAL/GPIO.h"
+#include "HAL/LED.H"
 #include "MCAL/RCC.h"
-#include "HAL/LED.h"
 
-void delay_ms(uint32_t ms)
- {
-    for (volatile uint32_t i = 0; i < ms * 16000; ++i)
-    {
+uint8_t LED_State = led_state_on;
+uint8_t count = 0;
 
-    }
-}
-void EXTI0_IRQHandler(void)
+
+void LED_Handler(void)
 {
-	led_setstatus(led_builtin , STATE_OFF);
-	NVIC_Trigger_Software_Interrupt(IRQ_EXT1_INTERRRUPT);
-	delay_ms(50);
+	count++;
+	if (count == 100)
+	{
+		if (LED_State == led_state_off)
+		{
+			led_setstatus(led_builtin , led_state_on);
+			LED_State = led_state_on;
+		}
+		else
+		{
+			led_setstatus(led_builtin , led_state_off);
+			LED_State = led_state_off;
+		}
+		count = 0;
+	}
 }
 
-
-void EXTI1_IRQHandler(void)
-{
-	NVIC_SetPendingIRQ(IRQ_EXT0_INTERRRUPT);
-	led_setstatus(led_builtin, STATE_ON);
-	delay_ms(50);
-}
 
 
 int main()
 {
 	RCC_Enable_AHB1_Peripheral(AHB1_GPIOC_ENABLE,STATE_ON);
 	led_init();
-	NVIC_EnableIRQ(IRQ_EXT0_INTERRRUPT);
-	NVIC_EnableIRQ(IRQ_EXT1_INTERRRUPT);	
-	NVIC_SetPriority(IRQ_EXT0_INTERRRUPT,0x30);
-	NVIC_SetPriority(IRQ_EXT1_INTERRRUPT,0x10);
-	NVIC_SetPriorityGrouping(GROUP_4_SUB);
-	volatile uint8_t x = NVIC_GetPriority(IRQ_EXT0_INTERRRUPT);
-	NVIC_Trigger_Software_Interrupt(IRQ_EXT0_INTERRRUPT);
+	led_setstatus(led_builtin , led_state_off);
+	
+	STK_Init(SOURCE_AHB_DIV_8);
+	STK_SetTimeMS(10);
+	STK_EnableInterrupt();
+	STK_SetCallback(LED_Handler);
+	STK_Start(STK_MODE_PERIODIC);
 	
 	while (1)
 	{
