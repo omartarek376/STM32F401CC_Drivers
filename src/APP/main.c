@@ -1,6 +1,6 @@
 #include "MCAL/SYSTICK.h"
 #include "MCAL/GPIO.h"
-#include "HAL/LED.H"
+#include "HAL/LED.h"
 #include "MCAL/RCC.h"
 
 uint8_t LED_State = led_state_on;
