@@ -5,6 +5,7 @@
 
 
 extern const Switchcfg_t Switches[_Switch_num];
+uint8_t Switch_State_List[_Switch_num];
 
 SWITCH_ERROR_STATE Switch_init(void)
 {
@@ -54,9 +55,37 @@ SWITCH_ERROR_STATE Switch_getstatus(uint32_t Switch, uint8_t * Switch_state)
         else
         {
             GPIO_GetPinValue(Switches[Switch].port, Switches[Switch].pin, Switch_state);
-            *Switch_state ^= Switches[Switch].connection;
+            *Switch_state = Switch_State_List[Switch] ^ Switches[Switch].connection;
             ERROR_STATE = SWITCH_ENUM_OK;
         }
     }
     return ERROR_STATE;
+}
+
+
+void SW_Runnable(void)
+{
+	uint8_t Iterator = 0;
+	uint8_t SW_CurrentState;
+	static uint8_t Prev_state[_Switch_num] = {0};
+	static uint8_t counts[_Switch_num] = {0};
+	for(Iterator = 0 ; Iterator < _Switch_num ; Iterator++)
+	{
+		GPIO_GetPinValue(Switches[Iterator].port, Switches[Iterator].pin, &SW_CurrentState);
+		if(SW_CurrentState == Prev_state[Iterator])
+		{
+			counts[Iterator]++;
+		}
+		else
+		{
+			counts[Iterator] = 0;
+		}
+		if(counts[Iterator] == 5) 
+		{
+			Switch_State_List[Iterator] = SW_CurrentState;
+			counts[Iterator] = 0;
+		}
+		Prev_state[Iterator] = SW_CurrentState;
+	}
+
 }
