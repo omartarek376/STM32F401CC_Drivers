@@ -19,6 +19,9 @@
 
 #define READ_MSK                                1
 
+#define BIT_OFFSET_AF                           8
+#define AF_OFFSET                               4
+
 
 
 typedef struct 
@@ -66,6 +69,18 @@ GPIO_ERROR_STATE GPIO_InitPin(GPIO_CONFIG_T * Config)
     Temp &= ~(GPIO_PUPDR_MSK << (Config->Pin * PIN_PUPDR_OFFSET));
     Temp |= (((Config->Mode >> (PIN_MODER_OFFSET + PIN_OTYPER_OFFSET)) & GPIO_PUPDR_MSK) << (Config->Pin * PIN_PUPDR_OFFSET));
     GPIO_Ports[Config->Port]->PUPDR = Temp;
+
+    uint32_t offset_af = (Config->Pin % BIT_OFFSET_AF) * AF_OFFSET;
+
+    if (Config->Pin <= GPIO_PIN_7)
+    {
+        GPIO_Ports[Config->Port]->AFRL |= (Config->Alternative << offset_af);
+    }
+    else
+    {
+        GPIO_Ports[Config->Port]->AFRH |= (Config->Alternative << offset_af);
+    }
+
 
     Error_State = GPIO_ENUM_OK;
     return Error_State;

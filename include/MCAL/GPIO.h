@@ -45,6 +45,18 @@
 
 #define GPIO_MODE_AN       0x00000003
 
+/*Macrod for Selecting which alternative function */
+#define GPIO_ALTERNATIVE_SYSTEM		0x00
+#define GPIO_ALTERNATIVE_TIM1		0x01
+#define GPIO_ALTERNATIVE_TIM3		0x02
+#define GPIO_ALTERNATIVE_TIM9		0x03
+#define GPIO_ALTERNATIVE_I2C		0x04
+#define GPIO_ALTERNATIVE_SPI		0x05
+#define GPIO_ALTERNATIVE_SPI3		0x06
+#define GPIO_ALTERNATIVE_USART1_2	0x07
+#define GPIO_ALTERNATIVE_USART6		0x08
+
+
 /*Macros for the GPIO pin speeds*/
 #define GPIO_SPEED_LOW     0x00000000
 #define GPIO_SPEED_MED     0x00000001
@@ -60,6 +72,7 @@ typedef struct
     uint32_t Pin;
     uint32_t Speed;
     uint32_t Mode;
+    uint32_t Alternative;
 }GPIO_CONFIG_T;
 
 typedef enum
