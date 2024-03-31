@@ -2,9 +2,8 @@
 #include "HAL/Scheduler.h"
 
 extern void Runnable_APP1(void);
-extern void Runnable_APP2(void);
 extern void SW_Runnable(void);
-extern void TrafficLights_Runnable(void);
+extern void LCD_RunnerTask(void);
 
 
 const runnable_t Runnables_List[_Runnables_Num] =
@@ -19,14 +18,9 @@ const runnable_t Runnables_List[_Runnables_Num] =
         	.periodicityMS = 10,
 			.callBackFn = &SW_Runnable
         },
-        [APP2] = {
-        	.name = "Control Led With Switch",
-			.periodicityMS = 50,
-			.callBackFn = &Runnable_APP2
-        },
-		[Traffic_Lights_APP] = {
-		    .name = "Traffic Light",
-			.periodicityMS = 1000,
-			.callBackFn = &TrafficLights_Runnable
+		[LCD_Runner] = {
+		    .name = "LCD Runner",
+			.periodicityMS = 1,
+			.callBackFn = &LCD_RunnerTask
 		}
 };

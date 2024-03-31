@@ -3,7 +3,6 @@
 enum{
 	APP1,
 	Switches_Runner,
-	APP2,
-	Traffic_Lights_APP,
+	LCD_Runner,
 	_Runnables_Num
 };
